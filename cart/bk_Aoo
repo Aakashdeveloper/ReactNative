@@ -1,0 +1,86 @@
+
+import React, {Component} from 'react';
+import {Button, StyleSheet, Text,  TextInput, View} from 'react-native';
+
+import ListItem from './src/components/Listitem/Listitem';
+
+export default class App extends Component{
+  state = {
+    placeName: '',
+    places:[]
+  }
+
+  placeNameChangeHandler = val => {
+    this.setState({
+      placeName: val
+    });
+  };
+
+  placeSubmitHandler = () => {
+    if(this.state.placeName.trim() === ""){
+      return;
+    }
+    this.setState(prevState => {
+      return {
+        places: prevState.places.concat(prevState.placeName)
+      };
+    });
+  };
+
+  render() {
+    const placeOutput =  this.state.places.map((place,i) => (
+      <ListItem key={i} placeName={place}/>
+    ))
+    return (
+      <View style={styles.container}>
+        <Text style={styles.mainHeading}>Shopping Cart</Text>
+        <View style={styles.inputContainer}>
+          <TextInput  value={this.state.placeName}  
+              style={styles.placeInput}
+              value={this.state.placeName}
+              onChangeText={this.placeNameChangeHandler}/>
+          <Button title="Add" styles={styles.placeButton}
+            onPress={this.placeSubmitHandler}/>
+        </View>
+        <View style={styles.listContainer}>
+          {placeOutput}
+        </View>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding:50,
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+    justifyContent:'flex-start'
+  },
+  inputContainer:{
+    flexDirection: "row",
+    width:"100%",
+    justifyContent:"space-between",
+    alignItems:"center"
+  },
+  placeInput:{
+    width:"70%",
+    borderWidth:1,
+    borderColor:"#000"
+  },
+  placeButton:{
+    width:"30%"
+  },
+  mainHeading:{
+    fontWeight: "bold",
+    color: "#6495ED",
+    fontSize:30
+  },
+  listContainer:{
+    width:"100%"
+  },
+  textColor:{
+    color:"#191970"
+  }
+});
